@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import moment from 'moment';
-
 export class NewsItem extends Component {
   constructor() {
     super();
@@ -15,15 +14,11 @@ export class NewsItem extends Component {
     return moment(publishedAt).fromNow();
   }
 
-  // ShowFullTitle(params)=> {
-
-  // }
-
   render() {
-    let { title = "Empty", description = "Empty", imageUrl = "holder.js/100px180", url = "/", publishedAt = this.state.today } = this.props;
+    let { title = "Empty", description = "Empty", imageUrl = "../news.jpg", url = "/", publishedAt = this.state.today } = this.props;
     return (
       <div>
-        <Card style={{ width: '18rem' }} className="my-3">
+        <Card style={{ width: '22rem' }} className="my-3">
           <Card.Img variant="top" src={imageUrl} />
           <Card.Body>
             <Card.Title>{title}</Card.Title>
