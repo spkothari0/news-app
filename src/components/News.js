@@ -16,7 +16,7 @@ export class News extends Component {
       "https://newsapi.org/v2/top-headlines?country=us&apiKey=2ae8aaeec03849c0af193bce13f96936")
       .then((res) => res.json())
       .then((json) => {
-        // console.log(json + "--json response");
+        // console.log(json, "--json response");
         if (json.status === "ok" && json.articles) {
           this.setState({ article: json.articles });
         }
