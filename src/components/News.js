@@ -1,17 +1,28 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
-import data from '../SampleResponse.json'
 // import CardGroup from './CardGroup'
 
 export class News extends Component {
-  article = data.articles;
   constructor() {
     super();
     this.state = {
-      article: this.article,
+      article: [],
       loading: false
     }
   }
+
+  async componentDidMount() {
+    await fetch(
+      "https://newsapi.org/v2/top-headlines?country=us&apiKey=2ae8aaeec03849c0af193bce13f96936")
+      .then((res) => res.json())
+      .then((json) => {
+        // console.log(json + "--json response");
+        if (json.status === "ok" && json.articles) {
+          this.setState({ article: json.articles });
+        }
+      })
+  }
+
   render() {
     return (
       <div className='container my-3'>

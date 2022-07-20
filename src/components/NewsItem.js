@@ -12,9 +12,12 @@ export class NewsItem extends Component {
   }
 
   calculateLastUpdated(publishedAt) {
-    console.log(moment(publishedAt).fromNow());
     return moment(publishedAt).fromNow();
   }
+
+  // ShowFullTitle(params)=> {
+
+  // }
 
   render() {
     let { title = "Empty", description = "Empty", imageUrl = "holder.js/100px180", url = "/", publishedAt = this.state.today } = this.props;
@@ -30,7 +33,6 @@ export class NewsItem extends Component {
             <Button variant="primary" href={url} target="_blank">See more</Button>
           </Card.Body>
           <Card.Footer>
-            {/* {console.log(publishedAt)} */}
             <small className="text-muted">Last updated {this.calculateLastUpdated(publishedAt)}</small>
           </Card.Footer>
         </Card>
