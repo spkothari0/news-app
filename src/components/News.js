@@ -19,13 +19,18 @@ export class News extends Component {
     category: PropTypes.string,
     apiKey: PropTypes.string,
   }
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: true,
       page: 1,
     }
+    document.title = `${this.capitalize((!this.props.category ? "general" : this.props.category) + " -")} NewsToday`
+  }
+
+  capitalize = (word) => {
+    return word.toLowerCase().charAt(0).toUpperCase() + word.toLowerCase().slice(1);
   }
 
   async goToSite(url) {
@@ -38,7 +43,7 @@ export class News extends Component {
       })
       .then((json) => {
         if (json.articles) {
-          this.setState({ articles: json.articles, loading: false });
+          this.setState({ articles: json.articles, loading: false, totalResults: json.totalResults });
         }
       })
   }
@@ -60,24 +65,26 @@ export class News extends Component {
 
   render() {
     return (
-      <div className='container my-3'>
-        <h1 className='text-center' style={{ margin: '35px 0pm' }}>News Today - Top Headlines</h1>
-        {this.state.loading && <Spinner />}
-        <div className="row">
-          {/* {console.log(this.props)} */}
-          {!this.state.loading && this.state.articles.map((element) => {
-            return <div className="col-md-4" key={element.url}>
-              <NewsItem title={element.title} description={element.description}
-                imageUrl={!element.urlToImage ? "../news.jpg" : element.urlToImage} url={element.url}
-                publishedAt={element.publishedAt} source={element.source.name} author={element.author} />
-            </div>
-          })}
-        </div>
-        <div className="container d-flex justify-content-around my-3">
-          <Button variant="dark" disabled={this.state.page <= 1} onClick={this.handlePrevClick}>&larr; Previous</Button>
-          <Button variant="info">{this.state.page}</Button>
-          <Button variant="dark" disabled={this.state.articles.length === 0} onClick={this.handleNextClick}>Next &rarr;</Button>
-        </div>
+      <div>
+        {<div className='container my-3'>
+          <h1 className='text-center' style={{ margin: '35px 0pm' }}>News Today - Top Headlines on {this.capitalize(!this.props.category ? "general" : this.props.category)}</h1>
+          {this.state.loading && <Spinner />}
+          <div className="row">
+            {/* {console.log(this.props)} */}
+            {!this.state.loading && this.state.articles.map((element) => {
+              return <div className="col-md-4" key={element.url}>
+                <NewsItem title={element.title} description={element.description}
+                  imageUrl={!element.urlToImage ? "../news.jpg" : element.urlToImage} url={element.url}
+                  publishedAt={element.publishedAt} source={element.source.name} author={element.author} />
+              </div>
+            })}
+          </div>
+          <div className="container d-flex justify-content-around my-3">
+            <Button variant="dark" disabled={this.state.page <= 1} onClick={this.handlePrevClick}>&larr; Previous</Button>
+            <Button variant="info">{this.state.page}</Button>
+            <Button variant="dark" disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} onClick={this.handleNextClick}>Next &rarr;</Button>
+          </div>
+        </div>}
       </div>
     )
   }
