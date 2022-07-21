@@ -7,7 +7,7 @@ export class Navbar extends Component {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
-              <img src="./news.svg" alt="" width="30" height="24" className="d-inline-block align-text-right mx-1" />
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMhhDKOxAg2Ie416aZsjRJZI0X_dZt1mLfMg&usqp=CAU" alt="news" width="30" height="24" className="d-inline-block align-text-right mx-1" />
               News Today
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

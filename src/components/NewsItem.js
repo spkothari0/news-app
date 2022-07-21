@@ -16,13 +16,15 @@ export class NewsItem extends Component {
   }
 
   render() {
-    let { title = "Empty", description = "Empty", imageUrl = "../news.jpg", url = "/", publishedAt = this.state.today, source = "unknows", author = "Unknown source" } = this.props;
+    let { title = "Empty", description = "Empty", imageUrl = "../news.jpg", url = "/", publishedAt = this.state.today, source = "Unknows", author = "Unknown source" } = this.props;
     return (
       <div className="my-3">
         <Card>
-          <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{ left: '90%', zIndex: '1' }} >
-            {!author ? "unknown" : author}
-          </span>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', right: '0' }}>
+            <span className="badge rounded-pill bg-danger" >
+              {!author ? "Unknown" : author}
+            </span>
+          </div>
           <Card.Img variant="top" src={imageUrl} />
           <Card.Body>
             <Card.Title>{title}</Card.Title>
