@@ -12,14 +12,14 @@ export class News extends Component {
     pageSize: 12,
     country: "in",
     category: "",
-    apiKey: "d093053d72bc40248998159804e0e67d"
+    // apiKey: "d093053d72bc40248998159804e0e67d"
   }
 
   static propTypes = {
     pageSize: PropTypes.number,
     country: PropTypes.string,
     category: PropTypes.string,
-    apiKey: PropTypes.string,
+    // apiKey: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -44,9 +44,15 @@ export class News extends Component {
       .then((res) => {
         // console.log(newsUrl, "->in gotosite");
         this.props.setProgress(30);
-        if (res.ok)
-          return res.json()
-        this.props.setProgress(70);
+        if (res.ok) {
+          this.props.setProgress(70);
+          return res.json();
+        }
+        else {
+          this.props.setProgress(70);
+          return false;
+        }
+
       })
       .then((json) => {
         if (json.articles) {
