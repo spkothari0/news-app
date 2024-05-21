@@ -26,3 +26,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Note
 -  The prebuilt third-party to API which is being used to fetch the news articles doesn't allow any other domain than localhost hence I was unable to deploy this on the website.
+
+Preview :
+
+<img width="944" alt="image" src="https://github.com/spkothari0/news-app/assets/30297030/22ff40fe-358a-4d4c-9741-eafedc8dc3bf">
+<img width="934" alt="image" src="https://github.com/spkothari0/news-app/assets/30297030/6a30f86c-d869-4123-94e3-503ac27e81d4">
+
+
