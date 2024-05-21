@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-// import Button from 'react-bootstrap/Button';
+import { useParams } from 'react-router-dom';
 import NewsItem from './NewsItem';
 import Spinner from './Spinner';
-import PropTypes from 'prop-types';
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import PropTypes from 'prop-types';
 export default function News(props) {
-
+  const { country, category } = useParams();
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
-
-  document.title = `${capitalize((!props.category ? "general" : props.category) + " -")} NewsToday`
+  const [hasArticle, setHasArticle] = useState(true);
+  document.title = `${capitalize((!category ? "general" : category) + " -")} NewsToday`;
 
   function capitalize(word) {
     return word.toLowerCase().charAt(0).toUpperCase() + word.toLowerCase().slice(1);
@@ -20,17 +19,14 @@ export default function News(props) {
 
   async function goToSite(url) {
     props.setProgress(0);
-    let newsUrl = url ? url : `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page}`;
-    // setLoading(true);
-    console.log(newsUrl, "the news url in gotosite");
+    let newsUrl = url ? url : `https://newsapi.org/v2/top-headlines?country=${country}&category=${category ? category : 'general'}&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page}`;
     await fetch(newsUrl)
       .then((res) => {
         props.setProgress(30);
         if (res.ok) {
           props.setProgress(70);
           return res.json();
-        }
-        else {
+        } else {
           props.setProgress(70);
           return false;
         }
@@ -40,50 +36,44 @@ export default function News(props) {
           setArticles(json.articles);
           setLoading(false);
           setTotalResults(json.totalResults);
+          setHasArticle(true);
         }
-      })
+        else {
+          setArticles([]);
+          setLoading(false);
+          setTotalResults(0);
+          setHasArticle(false);
+        }
+          
+      });
     props.setProgress(100);
   }
 
   useEffect(() => {
     goToSite();
-  }, [])
-
-  async function handlePrevClick() {
-    setPage(page - 1);
-    setLoading(true);
-
-  }
-  function handleNextClick() {
-    setPage(page + 1);
-    setLoading(true);
-  }
+  }, [country, category]);
 
   async function fetchMoreData(url) {
-
-    let newsUrl = url ? url : `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page + 1}`;
+    let newsUrl = url ? url : `https://newsapi.org/v2/top-headlines?country=${country}&category=${category ? category : 'general'}&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page + 1}`;
     setPage(page + 1);
     setLoading(true);
-    console.log(newsUrl, "->in fetchMoreData");
     fetch(newsUrl)
       .then((res) => {
-        if (res.ok)
-          return res.json()
+        if (res.ok) return res.json();
       })
       .then((json) => {
         if (json.articles) {
           setArticles(articles.concat(json.articles));
           setLoading(false);
         }
-      })
+      });
   }
 
   return (
     <>
-      {/* <div className='container my-3'> */}
-      <h1 className='text-center my-3' style={{ margin: '35px 0pm' }}>News Today - Top Headlines on {capitalize(!props.category ? "general" : props.category)}</h1>
+      <h1 className='text-center my-3' style={{ margin: '35px 0pm' }}>News Today - Top Headlines on {capitalize(!category ? "general" : category)}</h1>
       {loading && <Spinner />}
-      <InfiniteScroll
+      {hasArticle && <InfiniteScroll
         dataLength={articles.length}
         next={fetchMoreData}
         hasMore={totalResults !== articles.length}
@@ -100,27 +90,18 @@ export default function News(props) {
             })}
           </div>
         </div>
-      </InfiniteScroll>
-      {/* <div className="container d-flex justify-content-around my-3">
-        <Button variant="dark" disabled={page <= 1} onClick={handlePrevClick}>&larr; Previous</Button>
-        <Button variant="info">{page}</Button>
-        <Button variant="dark" disabled={page + 1 > Math.ceil(totalResults / props.pageSize)} onClick={handleNextClick}>Next &rarr;</Button>
-      </div> */}
-      {/* </div> */}
+      </InfiniteScroll>}
+      {!hasArticle && <h2 className='text-center'>No article found</h2>}
     </>
-  )
-
+  );
 }
 
 News.defaultProps = {
   pageSize: 12,
-  country: "in",
-  category: "",
-}
+};
 
 News.propTypes = {
   pageSize: PropTypes.number,
-  country: PropTypes.string,
-  category: PropTypes.string,
-  // apiKey: PropTypes.string,
-}
+  apiKey: PropTypes.string.isRequired,
+  setProgress: PropTypes.func.isRequired,
+};
