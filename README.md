@@ -25,7 +25,7 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## Note
--  The prebuilt third-party to API which is being used to fetch the news articles doesn't allow any other domain than localhost hence I was unable to deploy this on the website.
+-  The prebuilt third-party to API which is being used to fetch the news articles doesn't allow any other domain than localhost hence I was unable to deploy this on the website. But Tried to deploy the app on [Link](https://spkothari0.github.io/news-app/US)
 
 Preview :
 
